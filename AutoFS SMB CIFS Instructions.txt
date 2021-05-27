@@ -1,0 +1,15 @@
+#enable autofs with windows shares (workgroup not domain. swap libnss-winbind with libpam-winbind for domain):
+sudo apt install autofs cifs-utils smbclient winbind libnss-winbind
+sudo mkdir /mnt/smb
+sudo mkdir /etc/creds
+sudo vi /etc/nsswitch.conf
+	#add "wins mdns4" to end of hosts line
+sudo vi /etc/auto.master
+	#add "/mnt/smb	/etc/auto.smb" to master file
+sudo vi /etc/auto.smb
+	#add ",rw,file_mode=0777,dir_mode=0777" after -fstype=cifs to open shares as full writable for all users
+cd /etc/creds
+	#make file with same name as host and add username and password to it:
+	#username=usernameforsmbshare
+	#password=passwordforsmbshare
+sudo reboot
